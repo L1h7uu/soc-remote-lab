@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  # Web Terminal (Truy cập terminal qua browser cổng 7681)
+  soc-terminal:
+    image: tsl0922/ttyd:alpine
+    container_name: soc-terminal
+    restart: unless-stopped
+    ports:
+      - "7681:7681"
+    volumes:
+      - ./lab_environment:/workspace
+    working_dir: /workspace
+    command: ttyd -p 7681 -c guest:Demo@123 sh -c "echo '=== WELCOME TO LE TRUNG HIEU SOC LAB ==='; echo 'Tools: Wireshark/Tshark, Zeek logs, Suricata, Python analysis scripts'; echo 'Type ls -la to start.'; /bin/sh"
+
+  # Guacamole Daemon & Client (Truy cập Web Desktop RDP/VNC cổng 8080)
+  guacd:
+    image: guacamole/guacd:latest
+    container_name: soc-guacd
+    restart: unless-stopped
+
+  guacamole:
+    image: guacamole/guacamole:latest
+    container_name: soc-guacamole
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      GUACD_HOSTNAME: guacd
+    volumes:
+      - ./conf/user-mapping.xml:/etc/guacamole/user-mapping.xml:ro
+    links:
+      - guacd

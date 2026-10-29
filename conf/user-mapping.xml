@@ -1,0 +1,13 @@
+<user-mapping>
+    <!-- Tài khoản Guest dành cho Nhà tuyển dụng / Phỏng vấn viên -->
+    <authorize 
+        username="guest" 
+        password="Demo@123">
+        
+        <connection name="SOC Terminal (Linux Shell)">
+            <protocol>ssh</protocol>
+            <param name="hostname">soc-terminal</param>
+            <param name="port">7681</param>
+        </connection>
+    </authorize>
+</user-mapping>
